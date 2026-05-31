@@ -955,7 +955,7 @@ img {
   width: 100px;
   z-index: 2;
   pointer-events: none;
-}
+} 
 
 .logos-ticker-wrap::before {
   left: 0;
@@ -1013,11 +1013,7 @@ img {
   animation: none;
 }
 
-.logo-pharma:hover {
-  transform: translateY(-5px) scale(1.04);
-  box-shadow: var(--shadow);
-  border-color: var(--navy-light);
-}
+
 
 /* brilho ao hover */
 .logo-pharma::after {
@@ -1033,7 +1029,7 @@ img {
       rgba(255, 255, 255, 0) 100%);
   transform: skewX(-15deg);
   pointer-events: none;
-}
+} 
 
 .logo-pharma:hover::after {
   animation: sheenPass .5s ease forwards;
