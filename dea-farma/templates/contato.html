@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% set active = "contato" %}
+{% set show_chat = true %}
+
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="section-label">Fale conosco</div>
+    <h1>Estamos prontos<br>para te atender</h1>
+    <p>Nossa equipe comercial responde em até 48 horas úteis. Para urgências, utilize o WhatsApp.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-inner contact-layout">
+
+    <div class="contact-info">
+      <h2>Canais de atendimento</h2>
+
+      <div class="contact-item">
+        <div class="contact-icon"> <i class="bi bi-geo-alt-fill"></i> </div>
+        <div>
+          <strong>Endereço</strong>
+          <p>R. José Hermes Damasceno - Santa Lúcia, Maceió - AL, 57082-015</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"> <i class="bi bi-whatsapp"></i> </div>
+        <div>
+          <strong>WhatsApp</strong>
+          <p>(82) 99999-0000</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"> <i class="bi bi-envelope-fill"></i> </div>
+        <div>
+          <strong>E-mail</strong>
+          <p>comercial@deafarma.com.br<br>sac@deafarma.com.br</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"> <i class="bi bi-clock-fill"></i> </div>
+        <div>
+          <strong>Horário de atendimento</strong>
+          <p>Segunda a sexta: 08h às 18h<br></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <div class="form-card">
+        <h3>Envie uma mensagem</h3>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nome <span>*</span></label>
+            <input type="text" id="ct_nome" placeholder="Seu nome ou empresa" />
+          </div>
+          <div class="form-group">
+            <label>E-mail <span>*</span></label>
+            <input type="email" id="ct_email" placeholder="email@empresa.com" />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="tel" id="ct_telefone" placeholder="(11) 99999-9999" />
+          </div>
+          <div class="form-group full">
+            <label>Assunto</label>
+            <select id="ct_assunto">
+              <option value="">Selecione...</option>
+              <option>Proposta comercial</option>
+              <option>Dúvida sobre pedido</option>
+              <option>Cadastro de cliente</option>
+              <option>Suporte / Reclamação</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Mensagem <span>*</span></label>
+            <textarea id="ct_mensagem" rows="4" placeholder="Descreva como podemos te ajudar..."></textarea>
+          </div>
+        </div>
+        <div class="form-feedback" id="ctFeedback"></div>
+        <button class="submit-btn" id="ctSubmit">
+          <span id="ctLabel">Enviar mensagem</span>
+          <span id="ctSpinner" class="spinner hidden"></span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('ctSubmit').addEventListener('click', () => {
+  const nome = document.getElementById('ct_nome').value.trim();
+  const email = document.getElementById('ct_email').value.trim();
+  const msg = document.getElementById('ct_mensagem').value.trim();
+  if (!nome)  { showCtFb('Informe seu nome.', 'error'); return; }
+  if (!email) { showCtFb('Informe um e-mail válido.', 'error'); return; }
+  if (!msg)   { showCtFb('Escreva sua mensagem.', 'error'); return; }
+  showCtFb('✅ Mensagem enviada! Responderemos em até 24h úteis.', 'success');
+});
+function showCtFb(msg, tipo) {
+  const el = document.getElementById('ctFeedback');
+  el.textContent = msg;
+  el.className = 'form-feedback ' + tipo;
+}
+</script>
+{% endblock %}

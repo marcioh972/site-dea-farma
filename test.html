@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar com Mudança de Cor no Scroll</title>
+  <style>
+    /* Configurações Globais para o Exemplo */
+    :root {
+      --green-800: #145b2f;
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: #f3f4f6;
+      color: #1f2937;
+      /* Altura extra apenas para permitir a rolagem da página e ver o efeito */
+      min-height: 2000px; 
+    }
+
+    /* ==========================================================================
+       ESTILOS DA NAVBAR (Seu CSS Corrigido e Otimizado)
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 900;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition:
+        background .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+      
+      /* Layout interno da barra */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    /* Estado ao rolar — com leve transparência e desfoque (backdrop-filter) */
+    .navbar.scrolled {
+      background: rgba(20, 91, 47, 0.96); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      box-shadow: 0 4px 20px rgba(20,91,47,.25);
+      padding: 15px 40px; /* Reduz levemente a altura da barra ao rolar */
+    }
+
+    /* Estrutura interna da Navbar */
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 40px;
+      transition: filter .35s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      color: #fff; /* Cor padrão quando scrolled */
+      transition: color .35s ease;
+    }
+
+    /* Links brancos/opacos APENAS quando a navbar NÃO está scrolled (está transparente no topo) */
+    .navbar:not(.scrolled) .nav-link {
+      color: rgba(255, 255, 255, .85);
+    }
+
+    /* Inverte a cor do logo para branco quando a navbar está transparente */
+    .navbar:not(.scrolled) .logo-img {
+      filter: brightness(0) invert(1);
+    }
+
+    /* Link de destaque (Fale Conosco/CTA) */
+    .nav-cta {
+      padding: 10px 20px;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--green-800);
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: all 0.35s ease;
+    }
+
+    /* Visual do CTA quando a navbar está transparente (Não Scrolled) */
+    .navbar:not(.scrolled) .nav-cta {
+      background: rgba(255, 255, 255, .15);
+      border: 1px solid rgba(255, 255, 255, .3);
+      color: #fff;
+    }
+
+    .navbar:not(.scrolled) .nav-cta:hover {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .navbar.scrolled .nav-cta {
+      background: #fff;
+      color: var(--green-800);
+    }
+
+    .navbar.scrolled .nav-cta:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ==========================================================================
+       ESTILOS DO HERO (Seu HTML adaptado para contraste)
+       ========================================================================== */
+    .hero {
+      position: relative;
+      height: 80vh;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+      background-color: #0d2818; /* Fallback */
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Background escuro/verde com gradiente para destacar o texto */
+      background: linear-gradient(135deg, #0f3d20 0%, #05190e 100%);
+      z-index: 1;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: #4ade80; /* Tom verde claro de destaque */
+    }
+
+    .hero-sub {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 35px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn-primary, .btn-ghost {
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #4ade80;
+      color: #05190e;
+    }
+
+    .btn-primary:hover {
+      background: #22c55e;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Estilização básica de seções inferiores */
+    .conteudo-exemplo {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .conteudo-exemplo h2 {
+      margin-bottom: 20px;
+      color: var(--green-800);
+    }
+
+    .conteudo-exemplo p {
+      line-height: 1.7;
+      margin-bottom: 15px;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (Faltava este trecho estrutural no seu HTML) -->
+  <nav class="navbar" id="mainNavbar">
+    <div class="logo-container">
+      <!-- Imagem de logo ilustrativa (com filtro inteligente no CSS) -->
+      <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=120&auto=format&fit=crop&q=60" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/120x40/000000/ffffff?text=LOGO'">
+    </div>
+    
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link">Início</a></li>
+      <li><a href="#" class="nav-link">Produtos</a></li>
+      <li><a href="#" class="nav-link">Sobre</a></li>
+      <li><a href="#" class="nav-link nav-cta">Fale Conosco</a></li>
+    </ul>
+  </nav>
+
+  <!-- SEÇÃO HERO (Seu HTML original) -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <h1 class="hero-title">
+        Eficiência e qualidade,<br>
+        <em>que a sua empresa merece.</em>
+      </h1>
+      <p class="hero-sub">
+        Distribuição farmacêutica B2B com mais de 4.800 produtos prontos para entrega rápida.
+      </p>
+      <div class="hero-actions">
+        <a href="/contato" class="btn-primary">Falar com um consultor</a>
+        <a href="/institucional" class="btn-ghost">Conheça a empresa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção extra apenas para dar rolagem à tela de teste -->
+  <main class="conteudo-exemplo">
+    <h2>Nossos Serviços e Diferenciais</h2>
+    <p>Role a página para baixo para observar a mágica acontecer com a barra de navegação superior!</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id interdum elit, eget molestie lectus. Pellentesque pellentesque volutpat metus quis pharetra. Proin facilisis nunc purus, eleifend elementum sapien elementum non. Vivamus pulvinar metus eget nulla tristique interdum.</p>
+    <p>Aliquam erat volutpat. Pellentesque eu scelerisque lorem. Sed vitae imperdiet turpis, eleifend rhoncus lorem. Morbi a facilisis ante. Cras vel felis elit. Cras porttitor pellentesque leo at facilisis.</p>
+  </main>
+
+  <!-- JAVASCRIPT: O motor que faltava para ativar a classe no Scroll -->
+  <script>
+    // Selecionamos a navbar pelo ID
+    const navbar = document.getElementById('mainNavbar');
+
+    // Função que verifica a posição do scroll da tela
+    function handleScroll() {
+      // Se rolou mais do que 50px do topo da página
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled'); // Ativa o fundo escuro/borrado
+      } else {
+        navbar.classList.remove('scrolled'); // Volta a ficar transparente
+      }
+    }
+
+    // Ouvinte de evento: monitora sempre que o usuário rolar a tela
+    window.addEventListener('scroll', handleScroll);
+  </script>
+
+</body>
+</html>

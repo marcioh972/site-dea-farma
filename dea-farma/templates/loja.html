@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set active = "loja" %}
+{% set show_chat = false %}
+
+{% block title %}Loja Virtual{% endblock %}
+
+{% block content %}
+
+<section class="coming-soon">
+  <div class="cs-inner">
+    <div class="cs-icon"> <i class="bi bi-cone-striped"></i> </div>
+    <div class="section-label">Em breve</div>
+    <h1>Loja Virtual<br><em>em construção</em></h1>
+    <p>Estamos desenvolvendo nossa plataforma de pedidos online para facilitar ainda mais o seu processo de compra. Em breve, você poderá consultar estoque, fazer pedidos e acompanhar entregas diretamente por aqui.</p>
+    <div class="cs-actions">
+      <a href="/contato" class="btn-primary">Fazer pedido pelo comercial</a>
+      <a href="/" class="btn-ghost">Voltar ao início</a>
+    </div>
+    <div class="cs-notify">
+      <p>Quer ser avisado quando a loja abrir?</p>
+      <div class="cs-notify-row">
+        <input type="email" id="notifyEmail" placeholder="seu@email.com.br" />
+        <button id="notifyBtn">Avisar-me</button>
+      </div>
+      <div class="form-feedback" id="notifyFeedback"></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('notifyBtn').addEventListener('click', () => {
+  const email = document.getElementById('notifyEmail').value.trim();
+  const fb = document.getElementById('notifyFeedback');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fb.textContent = 'Informe um e-mail válido.';
+    fb.className = 'form-feedback error';
+    return;
+  }
+  fb.textContent = '✅ Ótimo! Você será notificado quando a loja abrir.';
+  fb.className = 'form-feedback success';
+  document.getElementById('notifyEmail').value = '';
+});
+</script>
+{% endblock %}

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Entregas do Nordeste - D&A Farma</title>
+  
+  <!-- Tailwind CSS para um design limpo, moderno e responsivo -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Biblioteca Leaflet e plugins para criação rápida do mapa com limites geográficos precisos -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide Icons para elementos de UI -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Estilos personalizados para o mapa e interações de hover */
+    #map {
+      height: 520px;
+      width: 100%;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      z-index: 1;
+    }
+    .dark #map {
+      background-color: #0f172a;
+    }
+    
+    /* Customização dos tooltips nativos do Leaflet */
+    .state-tooltip {
+      background: rgba(15, 23, 42, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #fff !important;
+      font-weight: 600;
+      font-size: 11px;
+      border-radius: 4px;
+      padding: 4px 8px;
+    }
+
+    /* Ocultar barra de atribuição padrão do leaflet para uma UI limpa */
+    .leaflet-control-attribution {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Cabeçalho -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="bg-emerald-600 text-white p-2 rounded-lg flex items-center justify-center">
+            <i data-lucide="truck" class="w-6 h-6"></i>
+          </span>
+          <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            D&A Farma <span class="font-normal text-slate-500 dark:text-slate-400">| Logística</span>
+          </h1>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 ml-1">
+          Cobertura completa e prazos de entrega detalhados para a Região Nordeste
+        </p>
+      </div>
+      
+      <!-- Alternador de Tema Escuro/Claro -->
+      <button id="theme-toggle" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition duration-150 shadow-sm text-sm font-medium">
+        <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-yellow-400"></i>
+        <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-slate-600"></i>
+        <span class="dark:text-white text-slate-700" id="theme-text">Modo Escuro</span>
+      </button>
+    </header>
+
+    <!-- Layout de duas colunas -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Lado Esquerdo: Mapa -->
+      <div class="lg:col-span-8 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-md border border-slate-100 dark:border-slate-750">
+        <div class="relative">
+          <div id="map"></div>
+          
+          <!-- Indicador flutuante de instrução -->
+          <div class="absolute bottom-4 left-4 z-[500] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg shadow-sm text-xs flex items-center gap-2 pointer-events-none">
+            <i data-lucide="pointer" class="w-4 h-4 text-emerald-600 animate-bounce"></i>
+            <span>Passe o mouse ou toque nos estados para detalhes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado Direito: Legenda e Painel de Informações -->
+      <div class="lg:col-span-4 flex flex-col gap-6">
+        
+        <!-- Bloco de Legendas -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md border border-slate-100 dark:border-slate-750">
+          <h2 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">
+            Legenda de Prazos
+          </h2>
+          <div class="flex flex-col gap-3.5">
+            <div class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded bg-[#115e59] border border-[#0f766e] flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Entrega Expressa</p>
+                <p class="text-[11px] text-slate-500">Prazo de 24 horas</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded bg-[#0d9488] border border-[#0f766e] flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Entrega Padrão</p>
+                <p class="text-[11px] text-slate-500">Prazo de 48 horas</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded bg-[#2dd4bf] border border-[#14b8a6] flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Entrega Programada</p>
+                <p class="text-[11px] text-slate-500">Prazo de 72 horas</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Outras Regiões</p>
+                <p class="text-[11px] text-slate-500">Sob consulta comercial</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloco de Tooltip Dinâmico -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md border border-slate-100 dark:border-slate-750 transition-all duration-300 min-h-[220px] flex flex-col justify-between" id="info-panel">
+          <div id="info-empty" class="h-full flex flex-col items-center justify-center text-center py-6">
+            <i data-lucide="map" class="w-10 h-10 text-slate-300 dark:text-slate-600 mb-3"></i>
+            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">Nenhum estado selecionado</p>
+            <p class="text-[11px] text-slate-400 mt-1 max-w-[200px]">Passe o mouse sobre o mapa para visualizar os detalhes logísticos de cada localidade.</p>
+          </div>
+          
+          <div id="info-content" class="hidden">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 id="info-state" class="text-lg font-bold text-slate-900 dark:text-white"></h3>
+                <span id="info-region" class="text-[11px] uppercase tracking-wider font-semibold text-slate-400"></span>
+              </div>
+              <span id="info-uf" class="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold px-2 py-1 rounded"></span>
+            </div>
+            
+            <div class="mb-4">
+              <span id="info-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"></span>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-lg border border-slate-100 dark:border-slate-800">
+              <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-1">Informações Logísticas</h4>
+              <p id="info-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas Gerais -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md border border-slate-100 dark:border-slate-750">
+          <h2 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">
+            Resumo de Cobertura
+          </h2>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-500 dark:text-slate-400 font-medium">Estados do Nordeste atendidos</span>
+                <span class="font-bold text-teal-600 dark:text-teal-400">9 de 9</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                <div class="bg-teal-600 dark:bg-teal-400 h-full w-full"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div class="text-center">
+                <p class="text-lg font-extrabold text-teal-700 dark:text-teal-400">4</p>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase">Expressas</p>
+              </div>
+              <div class="text-center border-x border-slate-100 dark:border-slate-700">
+                <p class="text-lg font-extrabold text-teal-600 dark:text-teal-450">3</p>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase">Padrão</p>
+              </div>
+              <div class="text-center">
+                <p class="text-lg font-extrabold text-teal-450 dark:text-teal-500">2</p>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase">Programadas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configurações de dados logísticos dos estados do Nordeste
+    const STATES_DATA = {
+      'AL': { name: 'Alagoas', region: 'Nordeste', tier: 'express', desc: 'Fluxo prioritário. Expedição diária de insumos até 14:00 diretamente da central de distribuição para hospitais e clínicas cadastrados.' },
+      'BA': { name: 'Bahia', region: 'Nordeste', tier: 'express', desc: 'Atendimento expresso para Salvador e Feira de Santana. Demais municípios com malha dedicada via frota própria.' },
+      'CE': { name: 'Ceará', region: 'Nordeste', tier: 'express', desc: 'Conexão aérea expressa para Fortaleza. Unidades de saúde recebem entregas diárias com total controle de cadeia fria.' },
+      'MA': { name: 'Maranhão', region: 'Nordeste', tier: 'scheduled', desc: 'Atendimento estruturado via rotas programadas semanais. Ideal para abastecimento planejado de farmácias regionais.' },
+      'PB': { name: 'Paraíba', region: 'Nordeste', tier: 'standard', desc: 'Prazos dinâmicos em até 48 horas. Suporte completo com atualização de rastreamento em tempo real.' },
+      'PE': { name: 'Pernambuco', region: 'Nordeste', tier: 'express', desc: 'Hub Logístico D&A Farma. Distribuição imediata e entregas ultra rápidas para toda a região metropolitana do Recife.' },
+      'PI': { name: 'Piauí', region: 'Nordeste', tier: 'scheduled', desc: 'Rotas dedicadas que saem da matriz duas vezes por semana. Monitoramento contínuo de temperatura interna.' },
+      'RN': { name: 'Rio Grande do Norte', region: 'Nordeste', tier: 'standard', desc: 'Padrão corporativo de alta estabilidade. Entrega garantida para Natal e adjacências em até 48 horas.' },
+      'SE': { name: 'Sergipe', region: 'Nordeste', tier: 'standard', desc: 'Atendimento contínuo pelo canal de Sergipe via rotas integradas com o centro sul baiano em até 48 horas.' }
+    };
+
+    // Estilos de Cor baseados em verde para cada nível
+    const TIER_STYLING = {
+      express: {
+        color: '#115e59', // Verde Escuro Teal
+        hoverColor: '#0f766e',
+        label: 'Entrega Expressa · 24h',
+        badgeClass: 'bg-teal-100 text-teal-900 dark:bg-teal-950 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
+      },
+      standard: {
+        color: '#0d9488', // Verde Médio Teal
+        hoverColor: '#14b8a6',
+        label: 'Entrega Padrão · 48h',
+        badgeClass: 'bg-emerald-100 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800'
+      },
+      scheduled: {
+        color: '#2dd4bf', // Verde Claro Teal
+        hoverColor: '#5eead4',
+        label: 'Entrega Programada · 72h',
+        badgeClass: 'bg-cyan-100 text-cyan-950 dark:bg-cyan-950 dark:text-cyan-200 border border-cyan-200 dark:border-cyan-800'
+      },
+      other: {
+        color: '#cbd5e1', // Fora de cobertura / Fora do NE
+        hoverColor: '#94a3b8',
+        label: 'Sob Consulta',
+        badgeClass: 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
+      }
+    };
+
+    // Inicialização do Mapa Leaflet focado no Nordeste do Brasil
+    const map = L.map('map', {
+      zoomControl: true,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      touchZoom: true
+    }).setView([-8.0, -40.5], 5.5); // Latitude e longitude centralizadas no NE
+
+    // Camada de fundo minimalista para dar foco ao vetor dos estados
+    const lightTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 });
+    const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 });
+    
+    // Adiciona o tile correto baseado no tema
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark' || (currentTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      darkTiles.addTo(map);
+      document.getElementById('theme-text').textContent = 'Modo Claro';
+    } else {
+      lightTiles.addTo(map);
+      document.getElementById('theme-text').textContent = 'Modo Escuro';
+    }
+
+    let geojson;
+
+    // Função de estilo inicial para os estados do Nordeste e outros do Brasil
+    function getFeatureStyle(feature) {
+      const uf = feature.properties.sigla;
+      const data = STATES_DATA[uf];
+      const isNE = data !== undefined;
+      const style = isNE ? TIER_STYLING[data.tier] : TIER_STYLING['other'];
+
+      return {
+        fillColor: style.color,
+        weight: isNE ? 2.5 : 1.2, // Linha de contorno bem destacada e visível
+        opacity: 1,
+        color: '#ffffff', // Contornos limpos em branco para máxima divisibilidade
+        dashArray: isNE ? '' : '3',
+        fillOpacity: isNE ? 0.85 : 0.25
+      };
+    }
+
+    // Comportamento de Hover do mouse (Destaque)
+    function highlightFeature(e) {
+      const layer = e.target;
+      const uf = layer.feature.properties.sigla;
+      const data = STATES_DATA[uf];
+      
+      if (!data) return; // Interação apenas para estados do Nordeste de interesse
+
+      const style = TIER_STYLING[data.tier];
+
+      layer.setStyle({
+        fillColor: style.hoverColor,
+        weight: 3.5,
+        color: '#ffffff',
+        fillOpacity: 1.0
+      });
+
+      layer.bringToFront();
+      updateInfoPanel(uf, data);
+    }
+
+    // Comportamento ao remover o mouse de cima do estado
+    function resetHighlight(e) {
+      geojson.resetStyle(e.target);
+      hideInfoPanel();
+    }
+
+    // Trata cliques e toques em telas móveis
+    function zoomToFeature(e) {
+      const layer = e.target;
+      const uf = layer.feature.properties.sigla;
+      const data = STATES_DATA[uf];
+      if (data) {
+        map.fitBounds(layer.getBounds());
+        updateInfoPanel(uf, data);
+      }
+    }
+
+    // Vincula interações em cada feição de estado
+    function onEachFeature(feature, layer) {
+      const uf = feature.properties.sigla;
+      const isNE = STATES_DATA[uf] !== undefined;
+
+      // Adiciona Tooltip nativo flutuante para acessibilidade
+      layer.bindTooltip(feature.properties.nome, {
+        direction: 'center',
+        className: 'state-tooltip',
+        permanent: false,
+        sticky: true
+      });
+
+      if (isNE) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
+    }
+
+    // Painel lateral de informações dinâmicas
+    function updateInfoPanel(uf, data) {
+      const emptyBox = document.getElementById('info-empty');
+      const contentBox = document.getElementById('info-content');
+      
+      emptyBox.classList.add('hidden');
+      contentBox.classList.remove('hidden');
+
+      document.getElementById('info-state').textContent = data.name;
+      document.getElementById('info-region').textContent = data.region;
+      document.getElementById('info-uf').textContent = uf;
+      document.getElementById('info-desc').textContent = data.desc;
+
+      const style = TIER_STYLING[data.tier];
+      const badge = document.getElementById('info-badge');
+      badge.textContent = style.label;
+      badge.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${style.badgeClass}`;
+    }
+
+    function hideInfoPanel() {
+      const emptyBox = document.getElementById('info-empty');
+      const contentBox = document.getElementById('info-content');
+      
+      emptyBox.classList.remove('hidden');
+      contentBox.classList.add('hidden');
+    }
+
+    // Carrega dados de fronteiras brasileiras por repositório oficial estruturado do IBGE (GeoJSON)
+    fetch('https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson')
+      .then(response => response.json())
+      .then(data => {
+        geojson = L.geoJson(data, {
+          style: getFeatureStyle,
+          onEachFeature: onEachFeature
+        }).addTo(map);
+
+        // Filtra para o mapa abrir enquadrado exclusivamente na área do Nordeste
+        const neFeatures = data.features.filter(f => STATES_DATA[f.properties.sigla] !== undefined);
+        const neGeoJson = L.geoJson({ type: 'FeatureCollection', features: neFeatures });
+        map.fitBounds(neGeoJson.getBounds(), { padding: [20, 20] });
+      })
+      .catch(err => {
+        console.error('Erro ao processar as fronteiras geoespaciais brasileiras:', err);
+      });
+
+    // Toggle de Tema Claro e Escuro inteligente
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      if (isDark) {
+        localStorage.setItem('theme', 'dark');
+        map.removeLayer(lightTiles);
+        darkTiles.addTo(map);
+        document.getElementById('theme-text').textContent = 'Modo Claro';
+      } else {
+        localStorage.setItem('theme', 'light');
+        map.removeLayer(darkTiles);
+        lightTiles.addTo(map);
+        document.getElementById('theme-text').textContent = 'Modo Escuro';
+      }
+    });
+
+    // Ativa inicialização de ícones Lucide
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>

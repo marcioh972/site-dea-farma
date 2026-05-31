@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% set active = "trabalhe" %}
+{% set show_chat = true %}
+
+{% block title %}Trabalhe Conosco{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="section-label">Faça parte do time</div>
+    <h1>Construa sua carreira<br>na DeA Farma</h1>
+    <p>Somos uma empresa em crescimento, comprometida com o desenvolvimento dos nossos colaboradores e com um ambiente de trabalho saudável e desafiador.</p>
+  </div>
+</section>
+
+<!-- <section class="section section--alt">
+  <div class="section-inner">
+    <div class="section-label">Vagas abertas</div>
+    <h2 class="section-title">Oportunidades disponíveis</h2>
+    <div class="jobs-list">
+      <div class="job-card">
+        <div class="job-info">
+          <h3>Analista Comercial B2B</h3>
+          <div class="job-tags">
+            <span>São Paulo — SP</span>
+            <span>Presencial</span>
+            <span>CLT</span>
+          </div>
+        </div>
+        <a href="#candidatura" class="btn-apply">Candidatar-se</a>
+      </div>
+      <div class="job-card">
+        <div class="job-info">
+          <h3>Assistente de Logística</h3>
+          <div class="job-tags">
+            <span>Guarulhos — SP</span>
+            <span>Presencial</span>
+            <span>CLT</span>
+          </div>
+        </div>
+        <a href="#candidatura" class="btn-apply">Candidatar-se</a>
+      </div>
+      <div class="job-card">
+        <div class="job-info">
+          <h3>Técnico de Qualidade Farmacêutica</h3>
+          <div class="job-tags">
+            <span>Guarulhos — SP</span>
+            <span>Presencial</span>
+            <span>CLT</span>
+          </div>
+        </div>
+        <a href="#candidatura" class="btn-apply">Candidatar-se</a>
+      </div>
+      <div class="job-card">
+        <div class="job-info">
+          <h3>Representante Comercial (autônomo)</h3>
+          <div class="job-tags">
+            <span>Remoto</span>
+            <span>PJ / Comissionado</span>
+          </div>
+        </div>
+        <a href="#candidatura" class="btn-apply">Candidatar-se</a>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section" id="candidatura">
+  <div class="section-inner">
+    <div class="section-label">Candidatura</div>
+    <h2 class="section-title"><br>Envie seu currículo</h2>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nome completo <span>*</span></label>
+          <input type="text" id="tc_nome" placeholder="Seu nome completo" />
+        </div>
+        <div class="form-group">
+          <label>E-mail <span>*</span></label>
+          <input type="email" id="tc_email" placeholder="email@exemplo.com" />
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="tel" id="tc_telefone" placeholder="(11) 99999-9999" />
+        </div>
+        <div class="form-group">
+          <label>Área de interesse</label>
+          <select id="tc_area">
+            <option value="">Selecione...</option>
+            <option>Comercial</option>
+            <option>Logística</option>
+            <option>Qualidade / Regulatório</option>
+            <option>Administrativo / Financeiro</option>
+            <option>Licitação</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nível</label>
+          <select id="tc_nivel">
+            <option value="">Selecione...</option>
+            <option>Estágio</option>
+            <option>Júnior</option>
+            <option>Pleno</option>
+            <option>Sênior</option>
+            <option>Gestão</option>
+          </select>
+        </div>
+        <div class="upload-curriculum">
+          <label for="pdf-file">Faça upload do seu currículo</label>
+        <input 
+            type="file" 
+            id="pdf-file" 
+            name="pdf-file" 
+            accept=".pdf" 
+            required>
+        <small>Apenas arquivos no formato .pdf </small>
+        </div>
+        <div class="form-group full">
+          <label>Mensagem / Apresentação</label>
+          <textarea id="tc_msg" rows="3" placeholder="Fale um pouco sobre você e por que quer trabalhar na DeA Farma..."></textarea>
+        </div>
+      </div>
+      <div class="form-feedback" id="tcFeedback"></div>
+      <button class="submit-btn" id="tcSubmit">
+        <span id="tcLabel">Enviar candidatura</span>
+        <span id="tcSpinner" class="spinner hidden"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('tcSubmit').addEventListener('click', async () => {
+  const feedback = document.getElementById('tcFeedback');
+  const nome  = document.getElementById('tc_nome').value.trim();
+  const email = document.getElementById('tc_email').value.trim();
+  if (!nome)  { showTcFeedback('Informe seu nome.', 'error'); return; }
+  if (!email) { showTcFeedback('Informe um e-mail válido.', 'error'); return; }
+  showTcFeedback('✅ Candidatura recebida! Entraremos em contato em breve.', 'success');
+});
+function showTcFeedback(msg, tipo) {
+  const el = document.getElementById('tcFeedback');
+  el.textContent = msg;
+  el.className = 'form-feedback ' + tipo;
+}
+</script>
+{% endblock %}

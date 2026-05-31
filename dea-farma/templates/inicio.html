@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% set active = "inicio" %}
+{% set show_chat = true %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      Eficiência e qualidade,<br>
+      <em>que a sua empresa merece.</em>
+    </h1>
+    <p class="hero-sub">
+      Distribuição farmacêutica B2B com mais de 4.800 produtos prontos para entrega rápida.
+    </p>
+    <div class="hero-actions">
+      <a href="/contato" class="btn-primary">Falar com um consultor</a>
+      <a href="/institucional" class="btn-ghost">Conheça a empresa</a>
+    </div>
+  </div>
+</section>
+
+<!-- Laboratórios -->
+<div class="logos-ticker-wrap">
+  <div class="logos-ticker">
+
+    <!-- bloco original -->
+    <div class="logo-pharma"><img src="/static/img/labs/uniao-quimica.png" alt="União Química"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/geolab.png" alt="Geolab"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/teuto.png" alt="Teuto"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/sanfarma.png" alt="Sanfarma"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/multilab.png" alt="Multilab"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/ems.png" alt="EMS"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/uniphar.png" alt="Uniphar"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/airela.png" alt="Airela"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/belfar.png" alt="Belfar"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/rilex.png" alt="Rilex"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/missner.png" alt="Missner"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/texcare.png" alt="Texcare"></div>
+
+    <!-- duplicata exata — necessária para o loop sem salto -->
+     <div class="logo-pharma"><img src="/static/img/labs/uniao-quimica.png" alt="União Química"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/geolab.png" alt="Geolab"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/teuto.png" alt="Teuto"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/sanfarma.png" alt="Sanfarma"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/multilab.png" alt="Multilab"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/ems.png" alt="EMS"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/uniphar.png" alt="Uniphar"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/airela.png" alt="Airela"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/belfar.png" alt="Belfar"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/rilex.png" alt="Rilex"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/missner.png" alt="Missner"></div>
+    <div class="logo-pharma"><img src="/static/img/labs/texcare.png" alt="Texcare"></div>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section class="sobre" id="sobre">
+  <div class="sobre-visual reveal">
+    <div class="sobre-frame">
+      <div class="sobre-frame-inner">
+        <img src="/static/img/logistica/logistica.png" alt="Logistica" class="sobre-icon" />
+      </div>
+    </div>
+  </div>
+  <div class="sobre-text">
+    <span class="section-tag reveal">Nossa História</span>
+    <h2 class="section-title reveal">Distribuição com <em>rigor</em> e responsabilidade.</h2>
+    <div class="divider reveal"></div>
+    <p class="reveal">A DeA Farma nasceu da convicção de que a distribuição de medicamentos é, antes de tudo, um ato de
+      responsabilidade com a vida. Operamos sob os mais rígidos protocolos sanitários e com uma logística que elimina
+      riscos e garante integridade em cada etapa da cadeia.</p>
+    <p class="reveal reveal-delay-1">Com infraestrutura certificada, rastreabilidade total e equipe
+      especializada, asseguramos que cada produto chegue ao seu destino com a qualidade e a segurança que os pacientes
+      exigem — e merecem.</p>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="diferenciais" id="diferenciais">
+  <div class="diff-header">
+    <div>
+      <span class="section-tag reveal">Por que a DeA Farma</span>
+      <h2 class="section-title reveal">O padrão que<br>o setor <em>exige.</em></h2>
+    </div>
+    <p class="reveal">Não entregamos apenas medicamentos. Entregamos confiança, previsibilidade e parceria estratégica
+      para o crescimento sustentável do seu negócio.</p>
+  </div>
+  <div class="cards-grid">
+    <div class="card reveal">
+      <span class="card-num">01</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <path d="M18 3 L33 9 L33 18 C33 25.73 26.4 33 18 35 C9.6 33 3 25.73 3 18 L3 9 Z" />
+      </svg>
+      <h3>Conformidade Regulatória Total</h3>
+      <p>Operamos em plena conformidade com a RDC 204/2017 e demais normas vigentes. Sua segurança jurídica é nossa
+        prioridade.</p>
+    </div>
+    <div class="card reveal reveal-delay-1">
+      <span class="card-num">02</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <rect x="4" y="4" width="28" height="28" rx="2" />
+        <polyline points="9,18 14,23 27,10" />
+      </svg>
+      <h3>Rastreabilidade Ponta a Ponta</h3>
+      <p>Cada unidade distribuída é monitorada em tempo real. Visibilidade completa do pedido à entrega, integrada ao
+        SNGPC.</p>
+    </div>
+    <div class="card reveal reveal-delay-2">
+      <span class="card-num">03</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="14" />
+        <polyline points="18,10 18,18 24,22" />
+      </svg>
+      <h3>Entrega com Precisão Temporal</h3>
+      <p>Logística estruturada para 98,4% de cumprimento no prazo. Rotas otimizadas e frota refrigerada própria.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-num">04</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <path d="M6 12 L18 4 L30 12 L30 28 L6 28 Z" />
+        <line x1="18" y1="4" x2="18" y2="28" />
+      </svg>
+      <h3>Portfólio Amplo e Especializado</h3>
+      <p>Mais de 4.800 SKUs entre medicamentos genéricos, similares, de referência, OTC, psicotrópicos e termolábeis.
+      </p>
+    </div>
+    <div class="card reveal reveal-delay-1">
+      <span class="card-num">05</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="24" cy="24" r="6" />
+        <line x1="12" y1="18" x2="24" y2="18" stroke-dasharray="3 3" />
+      </svg>
+      <h3>Relacionamento Consultivo</h3>
+      <p>Gerentes de conta dedicados que entendem seu negócio. Suporte proativo antes que os problemas aconteçam.</p>
+    </div>
+    <div class="card reveal reveal-delay-2">
+      <span class="card-num">06</span>
+      <svg class="card-icon" viewBox="0 0 36 36">
+        <polyline points="4,28 12,18 18,22 26,10 32,14" />
+      </svg>
+      <h3>Condições Comerciais Inteligentes</h3>
+      <p>Tabelas flexíveis, prazos diferenciados e bonificações para parceiros estratégicos. Crescer junto é o nosso
+        modelo de negócio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section class="categorias" id="categorias">
+  <div class="cats-header">
+    <span class="section-tag reveal">Portfólio</span>
+    <h2 class="section-title reveal">Cobertura completa para <em>cada necessidade.</em></h2>
+    <div class="divider"></div>
+    <p class="reveal">Do medicamento de referência ao genérico, do OTC ao controlado — o portfólio DeA Farma cobre todo
+      o espectro terapêutico.</p>
+  </div>
+  <div class="cats-grid">
+    <div class="cat-item reveal">
+      <div class="cat-bg">Rx</div>
+      <span class="cat-label">Principal Categoria</span>
+      <div class="cat-name">Medicamentos de Prescrição</div>
+    </div>
+    <div class="cat-item reveal reveal-delay-1">
+      <div class="cat-bg">OTC</div>
+      <span class="cat-label">Venda Livre</span>
+      <div class="cat-name">OTC & MIPs</div>
+    </div>
+    <div class="cat-item reveal reveal-delay-2">
+      <div class="cat-bg">❄</div>
+      <span class="cat-label">Cadeia Fria</span>
+      <div class="cat-name">Termolábeis</div>
+    </div>
+    <div class="cat-item reveal reveal-delay-1">
+      <div class="cat-bg">⊕</div>
+      <span class="cat-label">Alta Regulação</span>
+      <div class="cat-name">Psicotrópicos & Antimicrobianos</div>
+    </div>
+    <div class="cat-item reveal reveal-delay-2">
+      <div class="cat-bg">G</div>
+      <span class="cat-label">Acessibilidade</span>
+      <div class="cat-name">Genéricos & Similares</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="processo" id="processo">
+  <div class="proc-header">
+    <span class="section-tag reveal">Como Funciona</span>
+    <h2 class="section-title reveal">Da parceria à <em>entrega</em> em quatro etapas.</h2>
+    <div class="divider reveal"></div>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <span class="step-num">01 / Cadastro</span>
+      <h4>Habilitação do Parceiro</h4>
+      <p>Análise documental ágil e aprovação da AFE do estabelecimento. Processo simplificado com suporte dedicado.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <span class="step-num">02 / Negociação</span>
+      <h4>Proposta Comercial</h4>
+      <p>Tabela customizada ao seu perfil de compra, condições de pagamento flexíveis e política de bonificação
+        progressiva.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <span class="step-num">03 / Pedido</span>
+      <h4>Gestão do Pedido</h4>
+      <p>Plataforma digital integrada para pedidos, consulta de estoque em tempo real e acompanhamento de NF.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="step reveal reveal-delay-3">
+      <span class="step-num">04 / Entrega</span>
+      <h4>Distribuição</h4>
+      <p>Frota própria, embalagens homologadas e comprovante de temperatura em cada remessa termolábil.</p>
+    </div>
+  </div>
+  <div class="btn-cadastro"> <button class="btn-submit"> Quero fazer meu cadastro</button> </div>
+</section>
+
+<!-- CONFIANÇA -->
+<section class="confianca" id="confianca">
+  <span class="section-tag reveal">Parceiros & Clientes</span>
+  <h2 class="section-title reveal">A confiança de <em>milhares</em> de estabelecimentos.</h2>
+  <div class="divider"></div>
+  <p class="reveal">Redes de farmácias, clínicas, hospitais e distribuidores secundários que escolheram a DeA Farma como
+    parceiro estratégico.</p>
+  <div class="trust-logos reveal">
+    <div class="trust-logo-item">Farmácias</div>
+    <div class="trust-logo-item">Redes Regionais</div>
+    <div class="trust-logo-item">Clínicas Privadas</div>
+    <div class="trust-logo-item">Hospitais & UPAs</div>
+    <div class="trust-logo-item">Home Care</div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="contato">
+  <div class="cta-copy">
+    <span class="section-tag reveal">Faça seu cadastro simplificado</span>
+    <h2 class="section-title reveal">Vamos construir algo <em>sólido</em> juntos.</h2>
+    <div class="divider reveal"></div>
+    <p class="reveal">Preencha o formulário ao lado e um de nossos consultores entrará em contato em até 48 horas para
+      apresentar uma proposta personalizada para o seu estabelecimento.</p>
+  </div>
+  <div>
+    <div class="cta-form reveal reveal-delay-1">
+      <input type="text" placeholder="Nome do responsável">
+      <input type="text" placeholder="Nome do estabelecimento">
+      <input type="email" placeholder="E-mail corporativo">
+      <input type="tel" placeholder="Telefone / WhatsApp">
+      <select>
+        <option value="" disabled selected>Tipo de estabelecimento</option>
+        <option>Farmácia independente</option>
+        <option>Rede de farmácias</option>
+        <option>Clínica / Consultório</option>
+        <option>Hospital</option>
+        <option>Distribuidora</option>
+        <option>Home Care</option>
+        <option>Outro</option>
+      </select>
+      <button class="btn-submit" onclick="alert('Obrigado! Nossa equipe entrará em contato em breve.')">Enviar cadastro</button>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
